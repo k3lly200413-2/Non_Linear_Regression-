@@ -89,7 +89,33 @@ def main():
     
     print(print_eval(power_summer[["temp"]], power_summer["demand"], lrm))
     
-    plot_model_on_data(X, y, lrm)
+    # plot_model_on_data(X, y, lrm)
+    
+    # it is possible to add modifiers to models during traning, called hyperparameters 
+    # One of these is fit_intercept for linear reg which dictates where the intercept ( interecetta )
+    # is to be calulated or not #
+    
+    lrm_ni = LinearRegression(fit_intercept=False)
+    
+    lrm_ni.fit(X, y)
+    
+    print(print_eval(X, y, lrm_ni))
+    
+    plt.figure(figsize=(12, 8))
+    plt.scatter(X, y)
+    plt.scatter(0, 0, s=100, c="red")
+    line_x = np.linspace(-2, 32, 100)
+    line_x_df = pd.DataFrame(line_x[:, None], columns=X.columns)
+    line_y = lrm.predict(line_x_df)
+    plt.plot(line_x, line_y, c="green", lw=2)
+    line_y0 = lrm_ni.predict(line_x_df)
+    plt.plot(line_x, line_y0, c="red", lw=2)
+    plt.legend(["Dati", "Origine", "Modello con intercetta", "Modello senza intercetta"])
+    plt.xlim((-2, 32))
+    plt.ylim((-0.2, 2.8))
+    plt.grid()
+    plt.xlabel("Temperatura (°C)")
+    plt.ylabel("Consumi (GW)")
     
     plt.show()
     
