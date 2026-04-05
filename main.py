@@ -1,7 +1,7 @@
 import numpy as np, pandas as pd, matplotlib.pyplot as plt, os
 
 from sklearn.linear_model import LinearRegression
-
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
 
 
@@ -140,6 +140,29 @@ def main():
     plot_model_on_data(summer_X_test, summer_y_test, lrm)
     
     plt.show()
+    
+    
+    
+    HOUSING_DATA_URL = "https://github.com/datascienceunibo/dialab2024/raw/main/Regressione_non_Lineare/housing.csv"
+    if not os.path.exists("housing.csv"):
+        from urllib.request import urlretrieve
+        urlretrieve(HOUSING_DATA_URL, "housing.csv")
+    
+    housing = pd.read_csv("housing.csv")
+    
+    train_data, test_data = train_test_split(housing, test_size=1/3, random_state=42)
+    
+    y = housing["MEDV"]
+    X = housing.drop(columns=["MEDV"])
+    
+    X_train, X_test, y_train, y_test = \
+        train_test_split(X, y, test_size=1/3, random_state=42)
+        
+    lrm = LinearRegression()
+    lrm.fit(X_train, y_train)
+    
+    # print_eval(X_train, y_train, lrm)
+    print_eval(X_test, y_test, lrm)
     
 if __name__ == "__main__":
     main()
