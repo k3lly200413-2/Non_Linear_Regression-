@@ -66,7 +66,7 @@ def main():
     
     # To get alpha and beta used in the formula alpha * x + beta we can access them 
     
-    print(lrm.coef_, lrm.intercept_)
+    # print(lrm.coef_, lrm.intercept_)
     
     manual_error = np.mean(np.square(preds - y))
     
@@ -79,15 +79,15 @@ def main():
     # gd uses a descent and iterative formula,
     # we still use gd becuase it scales better,
     # analitical way inverts a matrix which gets VERY expensive
-    print(f"Manual Error = {manual_error}\nSk Error = {sk_error}\ndifference => {manual_error - sk_error}")
+    # print(f"Manual Error = {manual_error}\nSk Error = {sk_error}\ndifference => {manual_error - sk_error}")
     
-    print(relative_error(y, preds))
+    # print(relative_error(y, preds))
     
     # The dumbest possible model is "always predict the average"
     # R² measures how much better you're doing than that.
-    print(r2_score(y, preds))
+    # print(r2_score(y, preds))
     
-    print(print_eval(power_summer[["temp"]], power_summer["demand"], lrm))
+    # print(print_eval(power_summer[["temp"]], power_summer["demand"], lrm))
     
     # plot_model_on_data(X, y, lrm)
     
@@ -99,7 +99,7 @@ def main():
     
     lrm_ni.fit(X, y)
     
-    print(print_eval(X, y, lrm_ni))
+    # print(print_eval(X, y, lrm_ni))
     
     # plt.figure(figsize=(12, 8))
     # plt.scatter(X, y)
@@ -122,6 +122,22 @@ def main():
     # ~is_train sets all values to false so takes all values that are not in is_train
     summer_train = power_summer.loc[is_train]
     summer_test = power_summer.loc[~is_train]
+    
+    summer_X_train = summer_train[["temp"]]
+    summer_y_train = summer_train["demand"]
+    summer_X_test = summer_test[["temp"]]
+    summer_y_test = summer_test["demand"]
+    
+    lrm = LinearRegression()
+    
+    lrm.fit(summer_X_train, summer_y_train)
+    
+    print(print_eval(summer_X_train, summer_y_train, lrm))
+    
+    print(print_eval(summer_X_test, summer_y_test, lrm))
+    
+    # plot_model_on_data(summer_X_train, summer_y_train, lrm)
+    plot_model_on_data(summer_X_test, summer_y_test, lrm)
     
     plt.show()
     
