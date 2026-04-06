@@ -237,6 +237,7 @@ def main():
     
     prm = Pipeline([
         ("poly", PolynomialFeatures(degree=3, include_bias=False)),
+        ("scale", StandardScaler())
         ("linreg", LinearRegression())
     ])
     
