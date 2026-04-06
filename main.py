@@ -132,14 +132,14 @@ def main():
     
     lrm.fit(summer_X_train, summer_y_train)
     
-    print(print_eval(summer_X_train, summer_y_train, lrm))
+    # print(print_eval(summer_X_train, summer_y_train, lrm))
     
-    print(print_eval(summer_X_test, summer_y_test, lrm))
+    # print(print_eval(summer_X_test, summer_y_test, lrm))
     
     # plot_model_on_data(summer_X_train, summer_y_train, lrm)
     plot_model_on_data(summer_X_test, summer_y_test, lrm)
     
-    plt.show()
+    # plt.show()
     
     
     
@@ -173,7 +173,32 @@ def main():
     lrm = LinearRegression()
     lrm.fit(X_train, y_train)
     
+    X_train_sq = X_train ** 2
     
+    X_train_d2 = np.c_[X_train, X_train_sq]
+    
+    # polynomial regression model
+    prm = LinearRegression()
+    prm.fit(X_train_d2, y_train)
+    
+    # print_eval(X_train_d2, y_train, prm)
+    
+    X_test_d2 = np.c_[X_test, X_test ** 2]
+    
+    # print_eval(X_test_d2, y_test, prm)
+    
+    X_train_cb = X_train ** 3
+    
+    X_train_d3 = np.c_[X_train_d2, X_train_cb]
+    
+    prm.fit(X_train_d3, y_train)
+    
+    
+    X_test_d3 = np.c_[X_test_d2, X_test ** 3]
+    
+    print_eval(X_train_d3, y_train, prm)
+    
+    # plt.show()
     
 if __name__ == "__main__":
     main()
