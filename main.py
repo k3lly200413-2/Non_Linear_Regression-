@@ -3,7 +3,7 @@ import numpy as np, pandas as pd, matplotlib.pyplot as plt, os
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.preprocessing import PolynomialFeatures, StandardScaler
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler, MinMaxScaler
 from sklearn.pipeline import Pipeline
 
 def relative_error(y_true, y_pred):
@@ -236,8 +236,8 @@ def main():
     # plt.show()
     
     prm = Pipeline([
-        ("poly", PolynomialFeatures(degree=3, include_bias=False)),
-        ("scale", StandardScaler())
+        ("poly", PolynomialFeatures(degree=4, include_bias=False)),
+        ("scale", MinMaxScaler()),
         ("linreg", LinearRegression())
     ])
     
@@ -246,6 +246,7 @@ def main():
     print_eval(X_test, y_test, prm)
     
     plot_model_on_data(X_test, y_test, prm)
+    
     
     plt.show()
     
