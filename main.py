@@ -3,7 +3,8 @@ import numpy as np, pandas as pd, matplotlib.pyplot as plt, os
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.preprocessing import PolynomialFeatures
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler
+from sklearn.pipeline import Pipeline
 
 def relative_error(y_true, y_pred):
     # the ys could be inverted, it would not make a difference becaues we take the abs
@@ -200,17 +201,52 @@ def main():
     
     # plt.show()
     
-    poly = PolynomialFeatures(degree=3, include_bias=False)
-    prm = LinearRegression()
-    X_train_sq = poly.fit_transform(X_train)
-    prm.fit(X_train_sq, y_train)
+    # poly = PolynomialFeatures(degree=3, include_bias=False)
+    # prm = LinearRegression()
+    # X_train_sq = poly.fit_transform(X_train)
+    # prm.fit(X_train_sq, y_train)
     
-    sample = [ [-5], [5], [25] ]
-    sample_sq = poly.transform(sample)
-    print(prm.predict(sample_sq))
+    # sample = [ [-5], [5], [25] ]
+    # sample_sq = poly.transform(sample)
+    # print(prm.predict(sample_sq))
     
-    X_test_sq = poly.transform(X_test)
-    print_eval(X_test_sq, y_test, prm)
+    # X_test_sq = poly.transform(X_test)
+    # print_eval(X_test_sq, y_test, prm)
+    
+    # prm = Pipeline([
+    #     ("poly", PolynomialFeatures(degree=2, include_bias=False)),
+    #     ("linreg", LinearRegression())
+    # ])
+    
+    # prm.fit(X_train, y_train)
+    
+    # print(prm.predict([ [-5], [5], [25] ]))
+    
+    # print_eval(X_test, y_test, prm)
+    
+    # print(prm.named_steps.keys())
+    
+    # print(prm.named_steps["linreg"])
+    
+    # prm.named_steps["linreg"].coef_
+    
+    
+    # plot_model_on_data(X_test, y_test, prm)
+    
+    # plt.show()
+    
+    prm = Pipeline([
+        ("poly", PolynomialFeatures(degree=3, include_bias=False)),
+        ("linreg", LinearRegression())
+    ])
+    
+    prm.fit(X_train, y_train)
+    print_eval(X_train, y_train, prm)
+    print_eval(X_test, y_test, prm)
+    
+    plot_model_on_data(X_test, y_test, prm)
+    
+    plt.show()
     
 if __name__ == "__main__":
     main()
