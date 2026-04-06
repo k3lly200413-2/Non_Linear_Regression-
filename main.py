@@ -3,7 +3,7 @@ import numpy as np, pandas as pd, matplotlib.pyplot as plt, os
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
-
+from sklearn.preprocessing import PolynomialFeatures
 
 def relative_error(y_true, y_pred):
     # the ys could be inverted, it would not make a difference becaues we take the abs
@@ -199,6 +199,18 @@ def main():
     print_eval(X_train_d3, y_train, prm)
     
     # plt.show()
+    
+    poly = PolynomialFeatures(degree=3, include_bias=False)
+    prm = LinearRegression()
+    X_train_sq = poly.fit_transform(X_train)
+    prm.fit(X_train_sq, y_train)
+    
+    sample = [ [-5], [5], [25] ]
+    sample_sq = poly.transform(sample)
+    print(prm.predict(sample_sq))
+    
+    X_test_sq = poly.transform(X_test)
+    print_eval(X_test_sq, y_test, prm)
     
 if __name__ == "__main__":
     main()
