@@ -164,5 +164,16 @@ def main():
     # print_eval(X_train, y_train, lrm)
     print_eval(X_test, y_test, lrm)
     
+    is_train = power.index.year < 2016
+    X_train = power.loc[is_train, ["temp"]]
+    y_train = power.loc[is_train, "demand"]
+    X_test = power.loc[~is_train, ["temp"]]
+    y_test = power.loc[~is_train, "demand"]
+    
+    lrm = LinearRegression()
+    lrm.fit(X_train, y_train)
+    
+    
+    
 if __name__ == "__main__":
     main()
